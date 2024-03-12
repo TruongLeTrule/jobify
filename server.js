@@ -6,27 +6,25 @@ const app = express();
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 
-// import routers
+// Routers
 import jobRouter from './routes/jobRouter.js';
+
+// Middlewares
+import errorHandlerMiddleware from './middlewares/errorHandlerMiddleware.js';
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// middleware
 app.use(express.json());
 
-// use routers
 app.use('/api/v1/jobs', jobRouter);
 
-// error handlers
+// Error handlers
 app.use('*', (req, res) => {
   res.status(404).json({ msg: 'not found' });
 });
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).json({ msg: 'something went wrong' });
-});
+app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5100;
 
