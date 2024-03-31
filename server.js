@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 
 // Routers
 import jobRouter from './routes/jobRouter.js';
+import authRouter from './routes/authRouter.js';
 
 // Middlewares
 import errorHandlerMiddleware from './middlewares/errorHandlerMiddleware.js';
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 
 app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/auth', authRouter);
 
 // Error handlers
 app.use('*', (req, res) => {
