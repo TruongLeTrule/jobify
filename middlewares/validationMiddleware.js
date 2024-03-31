@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { body, param, validationResult } from 'express-validator';
 import { BadRequestError, NotFoundError } from '../errors/customErrors.js';
-import { JOB_STATUS, JOB_TYPE, USER_ROLE } from '../utils/constants.js';
+import { JOB_STATUS, JOB_TYPE } from '../utils/constants.js';
 import Job from '../models/jobModel.js';
 import User from '../models/UserModel.js';
 
@@ -12,9 +12,8 @@ const withValidationErrors = (validateValues) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         const errorsMessage = errors.array().map((err) => err.msg);
-        if (errorsMessage[0].startsWith('no job')) {
+        if (errorsMessage[0].startsWith('no job'))
           throw new NotFoundError(errorsMessage);
-        }
         throw new BadRequestError(errorsMessage);
       }
       next();
@@ -35,13 +34,9 @@ export const validateJobInput = withValidationErrors([
 export const validateIdParam = withValidationErrors([
   param('id').custom(async (value) => {
     const isValidId = mongoose.Types.ObjectId.isValid(value);
-    if (!isValidId) {
-      throw Error('invalid MongoDB id');
-    }
+    if (!isValidId) throw Error('invalid MongoDB id');
     const id = await Job.findById(value);
-    if (!id) {
-      throw Error(`no job with id ${value}`);
-    }
+    if (!id) throw Error(`no job with id ${value}`);
   }),
 ]);
 
@@ -54,9 +49,7 @@ export const validateRegisterInput = withValidationErrors([
     .withMessage('invalid email format')
     .custom(async (email) => {
       const user = await User.findOne({ email });
-      if (user) {
-        throw new Error('email already exists');
-      }
+      if (user) throw new Error('email already exists');
     }),
   body('password')
     .notEmpty()
@@ -64,4 +57,13 @@ export const validateRegisterInput = withValidationErrors([
     .isLength({ min: 6 })
     .withMessage('password must be at least 6 characters long'),
   body('lastName').notEmpty().withMessage('last name is required'),
+]);
+
+export const validateLoginInput = withValidationErrors([
+  body('email')
+    .notEmpty()
+    .withMessage('email is required')
+    .isEmail()
+    .withMessage('invalid email format'),
+  body('password').notEmpty().withMessage('password is required'),
 ]);
