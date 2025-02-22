@@ -13,30 +13,33 @@ import AuthRouter from './routes/AuthRouter.js'
 // Middlewares
 import errorHandlerMiddleware from './middlewares/errorHandler.js'
 import { NotFoundError } from './errors/customErrors.js'
+import cookieParser from 'cookie-parser'
+import { authenticateUser } from './middlewares/authenticate.js'
 
 if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'))
+  app.use(morgan('dev'))
 }
 
 app.use(express.json())
+app.use(cookieParser())
 
-app.use('/api/v1/jobs', JobRouter)
+app.use('/api/v1/jobs', authenticateUser, JobRouter)
 app.use('/api/v1/auth', AuthRouter)
 
 // Error handlers
 app.use('*', (req, res) => {
-    throw new NotFoundError('This route does not exist')
+  throw new NotFoundError('This route does not exist')
 })
 app.use(errorHandlerMiddleware)
 
 const port = process.env.PORT || 5100
 
 try {
-    await mongoose.connect(process.env.MONGO_URL)
-    app.listen(port, () => {
-        console.log(`Server listening on port ${port}`)
-    })
+  await mongoose.connect(process.env.MONGO_URL)
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`)
+  })
 } catch (error) {
-    console.log(error)
-    process.exit(1)
+  console.log(error)
+  process.exit(1)
 }
