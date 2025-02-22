@@ -9,12 +9,17 @@ import mongoose from 'mongoose'
 // Routers
 import JobRouter from './routes/JobRouter.js'
 import AuthRouter from './routes/AuthRouter.js'
+import UserRouter from './routes/UserRouter.js'
+import AdminRouter from './routes/AdminRouter.js'
 
 // Middlewares
 import errorHandlerMiddleware from './middlewares/errorHandler.js'
 import { NotFoundError } from './errors/customErrors.js'
 import cookieParser from 'cookie-parser'
-import { authenticateUser } from './middlewares/authenticate.js'
+import {
+  authenticateUser,
+  authorizePermissions,
+} from './middlewares/authenticate.js'
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
@@ -25,6 +30,13 @@ app.use(cookieParser())
 
 app.use('/api/v1/jobs', authenticateUser, JobRouter)
 app.use('/api/v1/auth', AuthRouter)
+app.use('/api/v1/users', UserRouter)
+app.use(
+  '/api/v1/admin',
+  authenticateUser,
+  authorizePermissions('admin'),
+  AdminRouter
+)
 
 // Error handlers
 app.use('*', (req, res) => {

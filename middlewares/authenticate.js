@@ -1,5 +1,8 @@
 import { verifyToken } from '../utils/jwtUtils.js'
-import { UnauthenticatedError } from '../errors/customErrors.js'
+import {
+  UnauthenticatedError,
+  UnauthorizedError,
+} from '../errors/customErrors.js'
 
 export const authenticateUser = async (req, res, next) => {
   const { token } = req.cookies
@@ -12,5 +15,13 @@ export const authenticateUser = async (req, res, next) => {
     next()
   } catch (error) {
     throw new UnauthenticatedError('unauthenticated')
+  }
+}
+
+export const authorizePermissions = (...permissions) => {
+  return (req, res, next) => {
+    if (!permissions.includes(req?.user?.role))
+      throw new UnauthorizedError('not authorized to access this route')
+    next()
   }
 }
