@@ -20,7 +20,7 @@ export const postForm = async ({
   try {
     await axios.post(postUrl, data)
     toast.success(successMsg)
-    return redirect(redirectPath)
+    return redirectPath ? redirect(redirectPath) : null
   } catch (error) {
     errors.msg = error?.response?.data?.msg
     return errors
