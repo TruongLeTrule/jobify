@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
     <ToastContainer
       position="top-right"
-      theme={checkDefaultTheme ? 'dark' : 'light'}
+      theme={checkDefaultTheme() ? 'dark' : 'light'}
     />
   </React.StrictMode>
 )
