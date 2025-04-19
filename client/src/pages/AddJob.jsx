@@ -44,7 +44,6 @@ const AddJob = () => {
             defaultValue={JOB_STATUS.PENDING}
             list={Object.values(JOB_STATUS)}
           />
-        </div>
         <button
           type="submit"
           className="btn btn-block form-btn"
@@ -52,6 +51,7 @@ const AddJob = () => {
         >
           {isSubmitting ? 'submitting...' : 'submit'}
         </button>
+        </div>
       </Form>
     </Wrapper>
   )
