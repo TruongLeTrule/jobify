@@ -34,8 +34,6 @@ const Job = ({ _id,company,position,jobLocation,jobType,jobStatus,createdAt }) =
                 </Form>
             </footer>
         </div>
-
-
     </Wrapper>
 }
 

@@ -1,20 +1,14 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  .job-icon {
-    font-size: 1rem;
-    margin-right: 1rem;
     display: flex;
     align-items: center;
-    svg {
-      color: var(--text-secondary-color);
-    }
-  }
-  .job-text {
+    gap: 0.6rem;
     text-transform: capitalize;
-    letter-spacing: var(--letter-spacing);
-  }
+
+    svg {
+        color: var(--text-secondary-color);
+    }
+;
 `;
 export default Wrapper;
