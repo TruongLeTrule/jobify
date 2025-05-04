@@ -3,11 +3,12 @@ import links from '../utils/links'
 import { useDashboardContext } from '../pages/DashboardLayout'
 
 const NavLinks = ({ isBigSidebar }) => {
-    const { toggleSidebar, user } = useDashboardContext()
+    const { toggleSidebar,user } = useDashboardContext()
     return (
         <div className="nav-links">
             {links.map((link) => {
-                const { text, path, icon } = link
+                const { text,path,icon } = link
+                if (user.role !== 'admin' && path === 'admin') return
                 return (
                     <NavLink
                         to={path}
