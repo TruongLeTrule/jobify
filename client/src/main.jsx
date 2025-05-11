@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
     <ToastContainer
-      position="top-right"
+      position="top-center"
       theme={checkDefaultTheme() ? 'dark' : 'light'}
     />
   </React.StrictMode>

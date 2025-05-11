@@ -1,10 +1,19 @@
 import 'express-async-errors'
 import * as dotenv from 'dotenv'
+
 dotenv.config()
 import express from 'express'
+
 const app = express()
 import morgan from 'morgan'
 import mongoose from 'mongoose'
+
+import cloudinary from 'cloudinary'
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 // Routers
 import JobRouter from './routes/JobRouter.js'
@@ -18,8 +27,15 @@ import { NotFoundError } from './errors/customErrors.js'
 import cookieParser from 'cookie-parser'
 import {
   authenticateUser,
-  authorizePermissions,
+  authorizePermissions
 } from './middlewares/authenticate.js'
+
+// Public
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+app.use(express.static(resolve(__dirname, './public')))
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))

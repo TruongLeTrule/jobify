@@ -1,4 +1,4 @@
-import { createBrowserRouter,RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import {
     Error,
@@ -20,6 +20,7 @@ import { action as loginAction } from './pages/Login'
 import { action as addJobAction } from './pages/AddJob'
 import { action as editJobAction } from './pages/EditJob'
 import { action as deleteJobAction } from './pages/DeleteJob'
+import { action as profileAction } from './pages/Profile'
 
 import { loader as dashboardLoader } from './pages/DashboardLayout'
 import { loader as allJobsLoader } from './pages/AllJobs'
@@ -28,7 +29,7 @@ import { loader as adminLoader } from './pages/Admin'
 
 export const checkDefaultTheme = () => {
     const isDarkTheme = localStorage.getItem('darkTheme') === 'true'
-    document.body.classList.toggle('dark-theme',isDarkTheme)
+    document.body.classList.toggle('dark-theme', isDarkTheme)
     return isDarkTheme
 }
 
@@ -42,17 +43,17 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Landing/>,
+                element: <Landing/>
             },
             {
                 path: 'login',
                 element: <Login/>,
-                action: loginAction,
+                action: loginAction
             },
             {
                 path: 'register',
                 element: <Register/>,
-                action: registerAction,
+                action: registerAction
             },
             {
                 path: 'dashboard',
@@ -62,20 +63,21 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         element: <AddJob/>,
-                        action: addJobAction,
+                        action: addJobAction
                     },
                     {
                         path: 'stats',
-                        element: <Stats/>,
+                        element: <Stats/>
                     },
                     {
                         path: 'all-jobs',
                         element: <AllJobs/>,
-                        loader: allJobsLoader,
+                        loader: allJobsLoader
                     },
                     {
                         path: 'profile',
                         element: <Profile/>,
+                        action: profileAction
                     },
                     {
                         path: 'admin',
@@ -92,10 +94,10 @@ const router = createBrowserRouter([
                         path: 'delete-job/:id',
                         action: deleteJobAction
                     }
-                ],
-            },
-        ],
-    },
+                ]
+            }
+        ]
+    }
 ])
 
 const App = () => {
